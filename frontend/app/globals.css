@@ -1,0 +1,150 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* App canvas + surfaces */
+    --background: 220 24% 97%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    /* Indigo primary */
+    --primary: 243 75% 59%;
+    --primary-foreground: 0 0% 100%;
+
+    --muted: 220 16% 95%;
+    --muted-foreground: 220 9% 46%;
+    --accent: 220 16% 94%;
+    --accent-foreground: 222 47% 11%;
+
+    /* Semantic status */
+    --success: 142 70% 38%;
+    --success-foreground: 0 0% 100%;
+    --warning: 32 90% 44%;
+    --warning-foreground: 0 0% 100%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 16% 90%;
+    --input: 220 16% 88%;
+    --ring: 243 75% 59%;
+    --radius: 0.5rem;
+
+    /* Dark slate sidebar */
+    --sidebar: 222 47% 11%;
+    --sidebar-foreground: 214 20% 82%;
+    --sidebar-muted: 215 16% 55%;
+    --sidebar-border: 217 33% 20%;
+    --sidebar-accent: 243 75% 66%;
+
+    /* Emil: strong ease-out for UI interactions */
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+
+    /* transitions-dev: error state shake */
+    --shake-distance: 6px;
+    --shake-overshoot: 4px;
+    --shake-dur-a: 80ms;
+    --shake-dur-b: 60ms;
+    --shake-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --revert-hold: 3000ms;
+    --revert-dur: 280ms;
+  }
+
+  .dark {
+    --background: 222 47% 7%;
+    --foreground: 210 20% 98%;
+    --card: 222 40% 11%;
+    --card-foreground: 210 20% 98%;
+
+    --primary: 243 75% 66%;
+    --primary-foreground: 0 0% 100%;
+
+    --muted: 217 33% 16%;
+    --muted-foreground: 215 18% 62%;
+    --accent: 217 33% 18%;
+    --accent-foreground: 210 20% 98%;
+
+    --success: 142 60% 45%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 55%;
+    --warning-foreground: 222 47% 11%;
+    --destructive: 0 63% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 217 33% 20%;
+    --input: 217 33% 24%;
+    --ring: 243 75% 66%;
+
+    --sidebar: 222 47% 5%;
+    --sidebar-foreground: 214 20% 78%;
+    --sidebar-muted: 215 16% 52%;
+    --sidebar-border: 217 33% 16%;
+    --sidebar-accent: 243 75% 70%;
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Tabular figures for money, quantities, timestamps, IDs. */
+  .tnum {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+}
+
+/* --- Error state shake (transitions-dev/12), verbatim --- */
+.t-input {
+  transition: border-color 150ms ease-out;
+  will-change: transform;
+}
+.t-input.is-error {
+  transition: border-color var(--revert-dur, 280ms) ease-out;
+}
+
+.t-error-msg {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--revert-dur, 280ms) ease-out,
+    visibility 0s linear var(--revert-dur, 280ms);
+}
+.t-input-wrap.is-error .t-error-msg {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity var(--revert-dur, 280ms) ease-out,
+    visibility 0s linear 0s;
+}
+
+.t-input.is-shaking {
+  animation: t-input-shake calc(var(--shake-dur-a) * 2 + var(--shake-dur-b) * 2) linear;
+}
+@keyframes t-input-shake {
+  0%      { transform: translateX(0);                                animation-timing-function: var(--shake-ease); }
+  28.57%  { transform: translateX(var(--shake-distance));            animation-timing-function: var(--shake-ease); }
+  57.14%  { transform: translateX(calc(var(--shake-distance) * -1)); animation-timing-function: var(--shake-ease); }
+  78.57%  { transform: translateX(var(--shake-overshoot));           animation-timing-function: var(--shake-ease); }
+  100%    { transform: translateX(0); }
+}
+
+/* Staggered rise for list rows / timeline (emil + transitions-dev texts-reveal) */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-rise {
+  animation: rise 320ms var(--ease-out) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .t-input { animation: none !important; transform: none !important; }
+  .animate-rise { animation: none !important; }
+}

@@ -1,0 +1,23 @@
+# Python
+backend/.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+
+# Node / Next
+node_modules/
+.next/
+next-env.d.ts
+frontend/.env*.local
+
+# Env
+*.env
+.env.local
+
+# Test artifacts
+.playwright-mcp/
+/*.png
+supabase/.branches/
+supabase/.temp/
+pnpm-lock.yaml
